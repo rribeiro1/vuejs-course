@@ -1,31 +1,48 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Product App</title>
-        <link rel="stylesheet" type="text/css" href="style.css">
-    </head>
-    <body>
-        <div class="nav-bar"></div>
-        <div id="app">
-            <div class="product">
-
-                <div class="product-image">
-                    <img v-bind:src="image" >
-                </div>
-
-                <div class="product-info">
-                    <h1>{{ product }}</h1>
-                    <span v-if="onSale">On Sale!</span>
-                    <p v-if="inventory > 10">In Stock</p>
-                    <p v-else-if="inventory <= 10 && inventory > 0">Almost Sold Out</p>
-                    <p v-else>Out Stock</p>
-                    <ul>
-                        <li v-for="detail in details">{{ detail }}</li>
-                    </ul>
-                </div>
-            </div>
+  <head>
+    <title>Product App</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <div class="nav-bar"></div>
+    <div id="app">
+      <div class="product">
+        <div class="product-image">
+          <img v-bind:src="image" />
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
-        <script src="main.js"></script>
-    </body>
+
+        <div class="product-info">
+          <h1>{{ product }}</h1>
+          <span v-if="onSale">On Sale!</span>
+          <p v-if="inventory > 10">In Stock</p>
+          <p v-else-if="inventory <= 10 && inventory > 0">
+            Almost Sold Out
+          </p>
+          <p :class="{ outOfStock: !inStock }" v-else>Out Stock</p>
+          <ul>
+            <li v-for="detail in details">{{ detail }}</li>
+          </ul>
+          <ul>
+            <li v-for="size in sizes">{{ size }}</li>
+          </ul>
+          <div
+            v-for="variant in variants"
+            :key="variant.variantId"
+            class="color-box"
+            :style="{ backgroundColor: variant.variantColor }"
+            @mouseover="updateProduct(variant.variantImage)"
+          ></div>
+
+          <button @click="addToCart">Add to Cart</button>
+          <button @click="removeToCart">Remove to Cart</button>
+          <div class="cart">
+            <p>Cart({{ cart }})</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="main.js"></script>
+  </body>
 </html>
