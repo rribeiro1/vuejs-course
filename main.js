@@ -1,3 +1,40 @@
+var eventBus = new Vue();
+
+Vue.component("product-cart", {
+  template: `
+    <div class="cart">
+        <p>Cart({{ cart.length }})</p>
+        <ul>
+          <li v-for="item in cart" :key="item.variantId">
+            {{ item.variantId }} {{ item.variantColor }}
+            <button @click="removeFromCart(item.variantId)">
+              X
+            </button>
+          </li>
+        </ul>
+      </div>
+  `,
+  data() {
+    return {
+      cart: []
+    };
+  },
+  methods: {
+    removeFromCart(id) {
+      for (var i = 0; i < this.cart.length; i++) {
+        if (this.cart[i].variantId === id) {
+          this.cart.splice(i, 1);
+        }
+      }
+    }
+  },
+  mounted() {
+    eventBus.$on("add-to-cart", product => {
+      this.cart.push(product);
+    });
+  }
+});
+
 Vue.component("product-details", {
   props: {
     description: {
@@ -86,7 +123,7 @@ Vue.component("product", {
   },
   methods: {
     addToCart() {
-      this.$emit("add-to-cart", this.variants[this.selectedVariant]);
+      eventBus.$emit("add-to-cart", this.variants[this.selectedVariant]);
     },
     updateProduct(index) {
       this.selectedVariant = index;
@@ -117,20 +154,7 @@ Vue.component("product", {
 var app = new Vue({
   el: "#app",
   data: {
-    premium: true,
-    cart: []
-  },
-  methods: {
-    addToCart(product) {
-      this.cart.push(product);
-    },
-    removeFromCart(id) {
-      for (var i = 0; i < this.cart.length; i++) {
-        if (this.cart[i].variantId === id) {
-          this.cart.splice(i, 1);
-        }
-      }
-    }
+    premium: true
   }
 });
 Vue.config.devtools = true;

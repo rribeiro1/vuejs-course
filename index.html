@@ -3,23 +3,13 @@
   <head>
     <title>Product App</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <meta name="viewport" content="width=500, initial-scale=1" />
   </head>
   <body>
     <div class="nav-bar"></div>
     <div id="app">
-      <div class="cart">
-        <p>Cart({{ cart.length }})</p>
-        <ul>
-          <li v-for="item in cart" :key="item.variantId">
-            {{ item.variantId }} {{ item.variantColor }}
-            <button @click="removeFromCart(item.variantId)">
-              Remove Item
-            </button>
-          </li>
-        </ul>
-      </div>
-      <product :premium="true" @add-to-cart="addToCart"></product>
-      <product-details description="This is a description"></product-details>
+      <product-cart></product-cart>
+      <product :premium="true"></product>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="main.js"></script>
